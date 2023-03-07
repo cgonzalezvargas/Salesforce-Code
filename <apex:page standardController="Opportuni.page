@@ -1,0 +1,102 @@
+<apex:page standardController="Opportunity">
+    <apex:pageBlock title="Opportunities Detail">
+        <apex:outputField value="{! Opportunity.Name}"         />
+        <apex:outputField value="{! Opportunity.Amount}"       />
+        <apex:outputField value="{! Opportunity.CloseDate}"    />
+        <apex:outputField value="{! Opportunity.Account.Name}" />
+    </apex:pageBlock>
+</apex:page>
+
+
+<apex:page standardController="Account">
+    <apex:detail />
+    <apex:relatedList list="Contacts"/>
+    <apex:relatedList list="Opportunities" pageSize="5"/>
+</apex:page>
+
+<apex:page standardController="Contact" >
+    <apex:pageBlock title="Contact View">
+       <apex:pageBlockSection >
+           First Name : {! Contact.FirstName}   <br/>
+           Last  Name : {! Contact.LastName}    <br/>
+           Owner Email: {! Contact.Owner.Email} <br/>           
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>
+
+<apex:page>
+    <apex:pageBlock title="User Status">
+        <apex:pageBlockSection columns="1">
+            {! $User.FirstName}
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>
+
+<apex:page >
+    <apex:pageBlock title="User Status">
+        <apex:pageBlockSection columns="1">
+            {! $User.FirstName & ' ' & $User.LastName}
+            ({! IF($User.isActive, $User.Username,'inactive')})
+            <p> Today's Date is {! TODAY()} </p>
+            <p> Next week it will be{! TODAY()+ 7}</p>
+            <p> The year today is {! YEAR(TODAY())}</p>
+            <p> Tomorrow will be day number {! DAY(TODAY()+1}</p>
+            <p> Let's find a maximum {! MAX(1,2,3,4,5,6,5,4,3,2,1)}</p>
+            <p>The square root of 49 is {! SQRT(49)}</p>
+            <p> Is it true? {! Contains('Salesforce.com','force.com')}</p>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>
+
+<apex:page sidebar="false" showHeader="false">
+    <apex:image dir="https://developer.salesforce.com/files/salesforce-developer-network-logo.png"/>
+</apex:page>
+
+
+
+<apex:page >
+    <h1>Hello World</h1>
+    <apex:pageBlock title="A Block Title">
+        <apex:pageBlockSection title="A Section Title">
+    		I'm three components down!
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="A new Section">
+            This is another section
+            </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>
+
+<apex:page standardController="Account">
+    <apex:form>
+    <apex:pageBlock title="Edit Account">
+        <apex:pageMessages/>
+        <apex:pageBlockSection columns="1">
+            <apex:inputField value="{! Account.Name }"/>
+            <apex:inputField value="{! Account.Phone }"/>
+    		<apex:inputField value="{! Account.Industry }"/>
+    		<apex:inputField value="{! Account.AnnualRevenue }"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockButtons>
+            <apex:commandButton action="{! save }" value="Save" />
+        </apex:pageBlockButtons>
+    </apex:pageBlock>
+        <apex:pageBlock title="Contacts">
+    <apex:pageBlockTable value="{!Account.contacts}" var="contact">
+        <apex:column>
+            <apex:outputLink
+                value="{! URLFOR($Action.Contact.Edit, contact.Id) }">
+                Edit
+            </apex:outputLink>
+            &nbsp;
+            <apex:outputLink
+                value="{! URLFOR($Action.Contact.Delete, contact.Id) }">
+                Del
+            </apex:outputLink>
+        </apex:column>
+                <apex:column value="{!contact.Name}"/>
+                <apex:column value="{!contact.Title}"/>
+                <apex:column value="{!contact.Phone}"/>
+    		</apex:pageBlockTable>
+		</apex:pageBlock>
+    </apex:form>
+</apex:page>
